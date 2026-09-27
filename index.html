@@ -1,0 +1,993 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Locker App</title>
+
+<style>
+
+/* =========================
+   الإعدادات
+========================= */
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    background: #f4f5f7;
+    font-family: Arial, Tahoma, sans-serif;
+    color: #29466d;
+}
+
+.screens {
+    min-height: 100vh;
+
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+
+    gap: 45px;
+
+    padding: 30px 15px;
+}
+
+
+/* =========================
+   الجوال
+========================= */
+
+.phone {
+    width: 360px;
+    height: 740px;
+
+    background: #ffffff;
+
+    border: 5px solid #111111;
+    border-radius: 43px;
+
+    position: relative;
+    overflow: hidden;
+
+    box-shadow: 0 5px 16px rgba(0,0,0,0.15);
+
+    flex-shrink: 0;
+}
+
+
+/* =========================
+   Dynamic Island
+========================= */
+
+.island {
+    position: absolute;
+
+    top: 12px;
+    left: 50%;
+
+    transform: translateX(-50%);
+
+    width: 108px;
+    height: 30px;
+
+    background: #050505;
+
+    border-radius: 20px;
+
+    z-index: 50;
+}
+
+
+/* =========================================================
+   شاشة رمز الدخول
+========================================================= */
+
+.qr-screen {
+    width: 100%;
+    height: 100%;
+
+    text-align: center;
+}
+
+
+/* العنوان */
+
+.qr-title {
+    margin-top: 70px;
+
+    font-size: 25px;
+
+    font-weight: bold;
+
+    color: #29466d;
+}
+
+
+/* =========================
+   QR
+========================= */
+
+.qr-container {
+    width: 190px;
+    height: 190px;
+
+    margin: 84px auto 0;
+
+    background: white;
+}
+
+
+/* شبكة QR */
+
+.qr {
+    width: 190px;
+    height: 190px;
+
+    display: grid;
+
+    grid-template-columns: repeat(29, 1fr);
+    grid-template-rows: repeat(29, 1fr);
+
+    background: white;
+}
+
+
+/* خلايا QR */
+
+.qr-cell {
+    width: 100%;
+    height: 100%;
+}
+
+
+/* =========================
+   النص
+========================= */
+
+.scan-text {
+    margin-top: 27px;
+
+    font-size: 17px;
+
+    font-weight: bold;
+
+    color: #29466d;
+}
+
+
+/* =========================
+   الوصف
+========================= */
+
+.description {
+    margin-top: 48px;
+
+    font-size: 14px;
+
+    line-height: 2;
+
+    color: #737982;
+
+    font-weight: 500;
+}
+
+
+/* =========================
+   PIN
+========================= */
+
+.pin {
+    width: 175px;
+    height: 54px;
+
+    margin: 13px auto 0;
+
+    border-radius: 9px;
+
+    background: #f5f8fc;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    direction: ltr;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 21px;
+
+    font-weight: bold;
+
+    color: #294f7e;
+}
+
+
+/* =========================
+   زر الحفظ
+========================= */
+
+.save-button {
+    position: absolute;
+
+    bottom: 24px;
+
+    left: 20px;
+    right: 20px;
+
+    width: calc(100% - 40px);
+
+    height: 59px;
+
+    border: none;
+
+    border-radius: 11px;
+
+    background: #347fd0;
+
+    color: white;
+
+    font-size: 17px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+}
+
+.save-button:active {
+    transform: scale(0.98);
+}
+
+
+/* =========================================================
+   شاشة الحجوزات
+========================================================= */
+
+.bookings-screen {
+    width: 100%;
+    height: 100%;
+
+    padding: 0 18px;
+}
+
+
+/* العنوان */
+
+.bookings-title {
+    margin-top: 70px;
+
+    text-align: right;
+
+    font-size: 25px;
+
+    font-weight: bold;
+
+    color: #29466d;
+}
+
+
+/* =========================
+   التبويبات
+========================= */
+
+.tabs {
+    width: 100%;
+    height: 49px;
+
+    margin-top: 34px;
+
+    padding: 3px;
+
+    background: #f1f4f7;
+
+    border-radius: 25px;
+
+    display: flex;
+}
+
+.tab {
+    width: 50%;
+    height: 43px;
+
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    border-radius: 23px;
+
+    color: #777;
+
+    font-size: 15px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+}
+
+.tab.active {
+    background: #347fd0;
+
+    color: white;
+}
+
+
+/* =========================
+   بطاقة الحجز
+========================= */
+
+.booking-card {
+    width: 100%;
+
+    min-height: 184px;
+
+    margin-top: 19px;
+
+    padding: 16px;
+
+    background: #ffffff;
+
+    border: 1px solid #eeeeee;
+
+    border-radius: 13px;
+
+    box-shadow: 0 2px 9px rgba(0,0,0,0.04);
+
+    text-align: right;
+}
+
+
+/* الجزء العلوي */
+
+.booking-top {
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: flex-start;
+}
+
+
+/* اسم الحجز */
+
+.booking-name {
+    font-size: 14px;
+
+    font-weight: bold;
+
+    color: #314b70;
+}
+
+
+/* رقم الخزانة */
+
+.booking-number {
+    margin-top: 4px;
+
+    font-size: 13px;
+
+    color: #555;
+}
+
+
+/* =========================
+   أيقونة اللوكر
+========================= */
+
+.locker-icon {
+    width: 34px;
+    height: 38px;
+
+    border: 2px solid #8aa9d2;
+
+    border-radius: 4px;
+
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    color: #8aa9d2;
+
+    font-size: 17px;
+}
+
+
+/* =========================
+   الوقت
+========================= */
+
+.booking-time {
+    margin-top: 14px;
+
+    text-align: center;
+
+    font-size: 13px;
+
+    color: #777;
+}
+
+
+/* =========================
+   التاريخ
+========================= */
+
+.booking-date {
+    margin-top: 4px;
+
+    text-align: center;
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+    color: #29466d;
+}
+
+
+/* =========================
+   الحالة
+========================= */
+
+.status {
+    display: inline-flex;
+
+    justify-content: center;
+    align-items: center;
+
+    min-width: 90px;
+
+    height: 34px;
+
+    margin-top: 12px;
+
+    border-radius: 9px;
+
+    background: #4bc86d;
+
+    color: white;
+
+    font-size: 12px;
+
+    font-weight: 600;
+}
+
+.status.blue {
+    background: #347fd0;
+}
+
+
+/* =========================================================
+   القائمة السفلية
+========================================================= */
+
+.bottom-nav {
+    position: absolute;
+
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    height: 75px;
+
+    background: #ffffff;
+
+    border-top: 1px solid #eeeeee;
+
+    display: flex;
+
+    justify-content: space-around;
+    align-items: center;
+}
+
+
+.nav-item {
+    width: 25%;
+
+    text-align: center;
+
+    color: #8b8f96;
+
+    font-size: 10px;
+}
+
+
+.nav-item.active {
+    color: #347fd0;
+}
+
+
+.nav-icon {
+    display: block;
+
+    height: 29px;
+
+    font-size: 22px;
+
+    line-height: 27px;
+}
+
+
+/* =========================
+   الجوال
+========================= */
+
+@media (max-width: 800px) {
+
+    .screens {
+        flex-direction: column;
+
+        align-items: center;
+
+        gap: 30px;
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<div class="screens">
+
+
+<!-- =====================================================
+     الشاشة الأولى
+     رمز الدخول
+====================================================== -->
+
+<div class="phone">
+
+    <div class="island"></div>
+
+
+    <div class="qr-screen">
+
+
+        <!-- العنوان -->
+
+        <div class="qr-title">
+            رمز الدخول
+        </div>
+
+
+        <!-- QR -->
+
+        <div class="qr-container">
+
+            <div class="qr" id="qrCode"></div>
+
+        </div>
+
+
+        <!-- النص -->
+
+        <div class="scan-text">
+            امسحي الرمز لفتح اللوكر
+        </div>
+
+
+        <!-- الوصف -->
+
+        <div class="description">
+
+            في حال عدم توفر الإنترنت أو نفاد البطارية
+
+            <br>
+
+            استخدمي الرمز السري الاحتياطي
+
+        </div>
+
+
+        <!-- PIN -->
+
+        <div class="pin">
+            PIN: 4827
+        </div>
+
+
+        <!-- زر الحفظ -->
+
+        <button class="save-button" onclick="savePin()">
+            حفظ الرمز
+        </button>
+
+
+    </div>
+
+</div>
+
+
+
+<!-- =====================================================
+     الشاشة الثانية
+     حجوزاتي
+====================================================== -->
+
+<div class="phone">
+
+    <div class="island"></div>
+
+
+    <div class="bookings-screen">
+
+
+        <!-- العنوان -->
+
+        <div class="bookings-title">
+            حجوزاتي
+        </div>
+
+
+        <!-- التبويبات -->
+
+        <div class="tabs">
+
+            <div class="tab active" onclick="changeTab(this)">
+                الحالية
+            </div>
+
+            <div class="tab" onclick="changeTab(this)">
+                السابقة
+            </div>
+
+        </div>
+
+
+        <!-- ==========================
+             الحجز الأول
+        =========================== -->
+
+        <div class="booking-card">
+
+
+            <div class="booking-top">
+
+
+                <div>
+
+                    <div class="booking-name">
+                        الخزانة كلية الحاسب
+                    </div>
+
+                    <div class="booking-number">
+                        الخزانة: 12
+                    </div>
+
+                </div>
+
+
+                <div class="locker-icon">
+                    ▣
+                </div>
+
+
+            </div>
+
+
+            <div class="booking-time">
+                من 05:00 م إلى 12:00 م
+            </div>
+
+
+            <div class="booking-date">
+                2025/08/25
+            </div>
+
+
+            <div class="status">
+                قيد الاستخدام
+            </div>
+
+
+        </div>
+
+
+        <!-- ==========================
+             الحجز الثاني
+        =========================== -->
+
+        <div class="booking-card">
+
+
+            <div class="booking-top">
+
+
+                <div>
+
+                    <div class="booking-name">
+                        الخزانة كلية العلوم
+                    </div>
+
+                    <div class="booking-number">
+                        الخزانة: 5
+                    </div>
+
+                </div>
+
+
+                <div class="locker-icon">
+                    ▣
+                </div>
+
+
+            </div>
+
+
+            <div class="booking-time">
+                من 01:00 م إلى 03:00 م
+            </div>
+
+
+            <div class="booking-date">
+                2025/08/26
+            </div>
+
+
+            <div class="status blue">
+                مؤكد
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+
+
+    <!-- ==========================
+         القائمة السفلية
+    =========================== -->
+
+    <div class="bottom-nav">
+
+
+        <div class="nav-item">
+
+            <span class="nav-icon">
+                ♙
+            </span>
+
+            الملف الشخصي
+
+        </div>
+
+
+        <div class="nav-item">
+
+            <span class="nav-icon">
+                ♧
+            </span>
+
+            التنبيهات
+
+        </div>
+
+
+        <div class="nav-item">
+
+            <span class="nav-icon">
+                ▤
+            </span>
+
+            الحجوزات
+
+        </div>
+
+
+        <div class="nav-item active">
+
+            <span class="nav-icon">
+                ⌂
+            </span>
+
+            الرئيسية
+
+        </div>
+
+
+    </div>
+
+</div>
+
+
+</div>
+
+
+
+<script>
+
+/* =====================================================
+   QR CODE
+===================================================== */
+
+const qr = document.getElementById("qrCode");
+
+const size = 29;
+
+let matrix = [];
+
+
+/* إنشاء المصفوفة */
+
+for (let y = 0; y < size; y++) {
+
+    matrix[y] = [];
+
+    for (let x = 0; x < size; x++) {
+
+        matrix[y][x] = false;
+
+    }
+
+}
+
+
+/* مولد عشوائي */
+
+let seed = 4827;
+
+function randomNumber() {
+
+    seed = (seed * 9301 + 49297) % 233280;
+
+    return seed / 233280;
+
+}
+
+
+/* =====================================================
+   مربعات QR الرئيسية
+===================================================== */
+
+function createFinder(xStart, yStart) {
+
+    for (let y = 0; y < 7; y++) {
+
+        for (let x = 0; x < 7; x++) {
+
+            const xPos = xStart + x;
+
+            const yPos = yStart + y;
+
+
+            if (
+
+                x === 0 ||
+                x === 6 ||
+                y === 0 ||
+                y === 6 ||
+
+                (
+                    x >= 2 &&
+                    x <= 4 &&
+                    y >= 2 &&
+                    y <= 4
+                )
+
+            ) {
+
+                matrix[yPos][xPos] = true;
+
+            }
+
+        }
+
+    }
+
+}
+
+
+/* إنشاء المربعات */
+
+createFinder(0, 0);
+
+createFinder(size - 7, 0);
+
+createFinder(0, size - 7);
+
+
+/* =====================================================
+   تعبئة باقي QR
+===================================================== */
+
+for (let y = 0; y < size; y++) {
+
+    for (let x = 0; x < size; x++) {
+
+
+        const finderArea =
+
+            (x < 8 && y < 8) ||
+
+            (x >= size - 8 && y < 8) ||
+
+            (x < 8 && y >= size - 8);
+
+
+        if (!finderArea) {
+
+            matrix[y][x] = randomNumber() > 0.52;
+
+        }
+
+    }
+
+}
+
+
+/* =====================================================
+   رسم QR
+===================================================== */
+
+for (let y = 0; y < size; y++) {
+
+    for (let x = 0; x < size; x++) {
+
+
+        const cell = document.createElement("div");
+
+        cell.className = "qr-cell";
+
+
+        if (matrix[y][x]) {
+
+            cell.style.backgroundColor = "#111111";
+
+        }
+
+
+        qr.appendChild(cell);
+
+    }
+
+}
+
+
+/* =====================================================
+   زر حفظ PIN
+===================================================== */
+
+function savePin() {
+
+    alert("تم حفظ الرمز PIN: 4827");
+
+}
+
+
+/* =====================================================
+   التبويبات
+===================================================== */
+
+function changeTab(selectedTab) {
+
+    const tabs = document.querySelectorAll(".tab");
+
+
+    tabs.forEach(function(tab) {
+
+        tab.classList.remove("active");
+
+    });
+
+
+    selectedTab.classList.add("active");
+
+}
+
+</script>
+
+
+</body>
+
+</html>
